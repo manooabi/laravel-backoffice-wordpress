@@ -13,12 +13,25 @@ class WordPressAuth
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    // public function handle(Request $request, Closure $next): Response
+    // {
+    //       // Check if token exists in session
+    //     if (!$request->session()->has('wp_token')) {
+    //         return response()->json(['message' => 'Unauthorized'], 401);
+    //     }
+    //     return $next($request);
+    // }
+    public function handle(Request $request, Closure $next)
     {
-          // Check if token exists in session
-        if (!$request->session()->has('wp_token')) {
+        $token = $request->bearerToken();
+
+        if (!$token) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
+
+        // no /me check, just allow token usage
+        $request->merge(['wp_token' => $token]);
+
         return $next($request);
     }
 }
