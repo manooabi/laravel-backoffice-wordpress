@@ -14,9 +14,7 @@ class AuthController extends Controller
         'username' => 'required|email',
         'password' => 'required'
     ]);
-
-    // $response = Http::asForm()->post('https://public-api.wordpress.com/oauth2/token', [
-        $response = Http::withOptions(['verify' => false])->asForm()->post('https://public-api.wordpress.com/oauth2/token', [
+        $response = Http::asForm()->post('https://public-api.wordpress.com/oauth2/token', [
 
         'client_id' => env('WP_CLIENT_ID'),
         'client_secret' => env('WP_CLIENT_SECRET'),
